@@ -31,5 +31,5 @@ iptables -t nat -F
 ### 机器 2 监听流量
 
 ```bash
-./https-debugger -l 30080
+./bin/https-debugger -l 30080
 ```

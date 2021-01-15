@@ -121,20 +121,25 @@ func doProxyReq(reqBody []byte) (*http.Response, error) {
 
 // 返回请求数据到客户端
 func writeResponse(w http.ResponseWriter, resp *http.Response) error {
-	data, err := ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
+
+	resp.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+	respBody, err := httputil.DumpResponse(resp, true)
+	resp.Body.Close()
+
 	if err != nil {
 		return fmt.Errorf("proxy read body fail %v", err)
 	}
 
-	w.WriteHeader(resp.StatusCode)
 	for k, headers := range resp.Header {
 		for _, header := range headers {
-			w.Header().Add(k, header)
+			w.Header().Set(k, header)
 		}
 	}
-	w.Write(data)
-	log.Printf("返回值:"+formatString, string(data))
+	w.WriteHeader(resp.StatusCode)
+	w.Write(body)
+	log.Printf("返回值:"+formatString, string(respBody))
 	return nil
 }
 
