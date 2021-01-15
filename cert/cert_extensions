@@ -1,0 +1,2 @@
+subjectAltName=DNS:test.com,IP:8.8.8.8
+basicConstraints=CA:TRUE
