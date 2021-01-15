@@ -74,7 +74,7 @@ func (h httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(500)
 		return
 	}
-	log.Printf("新情求:"+formatString, string(reqBody))
+	log.Printf("新请求:"+formatString, string(reqBody))
 
 	//计算时间
 	start := time.Now()
